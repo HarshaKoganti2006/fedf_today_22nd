@@ -1,0 +1,840 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WaveSearch | Glass Interface with Wave Effects</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, #121212 0%, #1e1e1e 50%, #0a0a0a 100%);
+            color: #e0e0e0;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 2rem;
+            position: relative;
+            overflow-x: hidden;
+        }
+        
+        /* Wave effects */
+        .waves {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            overflow: hidden;
+        }
+        
+        .wave {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 200%;
+            height: 15%;
+            background: rgba(212, 175, 55, 0.03);
+            border-radius: 40% 45% 40% 45%;
+            animation: wave 18s linear infinite;
+            transform: translate3d(0, 0, 0);
+        }
+        
+        .wave:nth-child(1) {
+            animation-delay: 0s;
+            background: rgba(212, 175, 55, 0.05);
+            height: 18%;
+            border-radius: 42% 46% 42% 46%;
+        }
+        
+        .wave:nth-child(2) {
+            animation-delay: -5s;
+            animation-duration: 22s;
+            background: rgba(212, 175, 55, 0.03);
+            height: 16%;
+            border-radius: 38% 42% 38% 42%;
+        }
+        
+        .wave:nth-child(3) {
+            animation-delay: -10s;
+            animation-duration: 26s;
+            background: rgba(212, 175, 55, 0.02);
+            height: 14%;
+            border-radius: 44% 40% 44% 40%;
+        }
+        
+        @keyframes wave {
+            0% {
+                transform: translateX(0) translateZ(0) scaleY(1);
+            }
+            50% {
+                transform: translateX(-25%) translateZ(0) scaleY(0.8);
+            }
+            100% {
+                transform: translateX(-50%) translateZ(0) scaleY(1);
+            }
+        }
+        
+        .container {
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+            z-index: 1;
+        }
+        
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem;
+            margin-bottom: 2rem;
+            width: 100%;
+            background: rgba(30, 30, 30, 0.4);
+            border-radius: 15px;
+            border: 1px solid rgba(212, 175, 55, 0.1);
+            backdrop-filter: blur(10px);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            color: #d4af37;
+            font-weight: 700;
+            font-size: 1.8rem;
+        }
+        
+        .logo i {
+            font-size: 2.2rem;
+            color: #d4af37;
+        }
+        
+        nav ul {
+            display: flex;
+            list-style: none;
+            gap: 2rem;
+        }
+        
+        nav a {
+            color: rgba(224, 224, 224, 0.8);
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            position: relative;
+            padding: 0.5rem 0;
+        }
+        
+        nav a:hover {
+            color: #d4af37;
+        }
+        
+        nav a::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: #d4af37;
+            transition: width 0.3s ease;
+        }
+        
+        nav a:hover::after {
+            width: 100%;
+        }
+        
+        .search-hero {
+            background: rgba(30, 30, 30, 0.4);
+            border-radius: 20px;
+            padding: 3rem;
+            width: 100%;
+            margin-bottom: 3rem;
+            text-align: center;
+            border: 1px solid rgba(212, 175, 55, 0.1);
+            backdrop-filter: blur(10px);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+        }
+        
+        .search-hero h1 {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            color: #e0e0e0;
+            font-weight: 600;
+            background: linear-gradient(to right, #d4af37, #f5e9cc, #d4af37);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            background-size: 200% auto;
+            animation: shimmer 3s linear infinite;
+        }
+        
+        @keyframes shimmer {
+            to {
+                background-position: 200% center;
+            }
+        }
+        
+        .search-hero p {
+            font-size: 1.2rem;
+            color: #b0b0b0;
+            margin-bottom: 2rem;
+            max-width: 700px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        
+        .search-container {
+            max-width: 700px;
+            margin: 0 auto;
+            position: relative;
+        }
+        
+        .search-box {
+            display: flex;
+            border-radius: 50px;
+            overflow: hidden;
+            border: 1px solid rgba(212, 175, 55, 0.2);
+            transition: all 0.3s ease;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(12px);
+            box-shadow: 0 4px 24px rgba(0, 0, 0, 0.2);
+        }
+        
+        .search-box:focus-within {
+            border-color: rgba(212, 175, 55, 0.5);
+            box-shadow: 0 4px 24px rgba(212, 175, 55, 0.2);
+        }
+        
+        .search-input {
+            flex: 1;
+            padding: 1.2rem 1.5rem;
+            border: none;
+            font-size: 1.1rem;
+            background: transparent;
+            outline: none;
+            color: #e0e0e0;
+        }
+        
+        .search-input::placeholder {
+            color: rgba(255, 255, 255, 0.5);
+        }
+        
+        .search-button {
+            background: linear-gradient(135deg, #d4af37 0%, #b8860b 100%);
+            color: #121212;
+            border: none;
+            padding: 0 2rem;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .search-button:hover {
+            background: linear-gradient(135deg, #b8860b 0%, #d4af37 100%);
+        }
+        
+        .search-options {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            margin-top: 1.5rem;
+        }
+        
+        .search-option {
+            background: rgba(40, 40, 40, 0.5);
+            border: 1px solid rgba(212, 175, 55, 0.1);
+            padding: 0.6rem 1.2rem;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            color: #b0b0b0;
+            backdrop-filter: blur(10px);
+        }
+        
+        .search-option:hover {
+            background: rgba(212, 175, 55, 0.1);
+            color: #d4af37;
+            border-color: rgba(212, 175, 55, 0.3);
+        }
+        
+        .search-option.active {
+            background: rgba(212, 175, 55, 0.2);
+            color: #d4af37;
+            border-color: rgba(212, 175, 55, 0.5);
+        }
+        
+        .features {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-bottom: 3rem;
+            width: 100%;
+        }
+        
+        .feature-card {
+            background: rgba(30, 30, 30, 0.4);
+            border-radius: 15px;
+            padding: 2rem;
+            transition: all 0.3s ease;
+            border: 1px solid rgba(212, 175, 55, 0.05);
+            backdrop-filter: blur(10px);
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+        }
+        
+        .feature-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 12px 32px rgba(0, 0, 0, 0.3);
+            border-color: rgba(212, 175, 55, 0.2);
+        }
+        
+        .feature-icon {
+            background: linear-gradient(135deg, #d4af37 0%, #b8860b 100%);
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 1.5rem;
+            color: #121212;
+            font-size: 1.5rem;
+            box-shadow: 0 5px 15px rgba(212, 175, 55, 0.3);
+        }
+        
+        .feature-card h3 {
+            font-size: 1.3rem;
+            margin-bottom: 1rem;
+            color: #e0e0e0;
+        }
+        
+        .feature-card p {
+            color: #b0b0b0;
+            line-height: 1.6;
+        }
+        
+        .results-section {
+            background: rgba(30, 30, 30, 0.4);
+            border-radius: 15px;
+            padding: 2rem;
+            width: 100%;
+            margin-bottom: 3rem;
+            border: 1px solid rgba(212, 175, 55, 0.05);
+            backdrop-filter: blur(10px);
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+            display: none;
+        }
+        
+        .results-section h2 {
+            font-size: 1.5rem;
+            margin-bottom: 1.5rem;
+            color: #e0e0e0;
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+        }
+        
+        .results-section h2 i {
+            color: #d4af37;
+        }
+        
+        .result-item {
+            padding: 1.5rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            transition: all 0.3s ease;
+        }
+        
+        .result-item:hover {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 8px;
+        }
+        
+        .result-item:last-child {
+            border-bottom: none;
+        }
+        
+        .result-title {
+            font-size: 1.2rem;
+            color: #d4af37;
+            margin-bottom: 0.5rem;
+            text-decoration: none;
+            display: block;
+            transition: all 0.3s ease;
+        }
+        
+        .result-title:hover {
+            color: #f5e9cc;
+        }
+        
+        .result-url {
+            color: #8bc34a;
+            font-size: 0.9rem;
+            margin-bottom: 0.5rem;
+            display: block;
+        }
+        
+        .result-description {
+            color: #b0b0b0;
+            line-height: 1.5;
+        }
+        
+        .recent-searches {
+            background: rgba(30, 30, 30, 0.4);
+            border-radius: 15px;
+            padding: 2rem;
+            width: 100%;
+            margin-bottom: 3rem;
+            border: 1px solid rgba(212, 175, 55, 0.05);
+            backdrop-filter: blur(10px);
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+        }
+        
+        .recent-searches h2 {
+            font-size: 1.5rem;
+            margin-bottom: 1.5rem;
+            color: #e0e0e0;
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+        }
+        
+        .recent-searches h2 i {
+            color: #d4af37;
+        }
+        
+        .search-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+        
+        .search-tag {
+            background: rgba(40, 40, 40, 0.5);
+            padding: 0.6rem 1.2rem;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            color: #b0b0b0;
+            border: 1px solid rgba(212, 175, 55, 0.1);
+            backdrop-filter: blur(10px);
+        }
+        
+        .search-tag:hover {
+            background: rgba(212, 175, 55, 0.1);
+            color: #d4af37;
+            border-color: rgba(212, 175, 55, 0.3);
+            transform: translateY(-2px);
+        }
+        
+        footer {
+            color: #b0b0b0;
+            text-align: center;
+            padding: 2rem;
+            margin-top: auto;
+            width: 100%;
+            font-size: 0.9rem;
+            backdrop-filter: blur(10px);
+            background: rgba(30, 30, 30, 0.4);
+            border-radius: 15px;
+            border: 1px solid rgba(212, 175, 55, 0.05);
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+        }
+        
+        footer p {
+            opacity: 0.8;
+        }
+        
+        .accent {
+            color: #d4af37;
+        }
+        
+        .loading {
+            display: none;
+            text-align: center;
+            padding: 2rem;
+        }
+        
+        .loading i {
+            font-size: 2rem;
+            color: #d4af37;
+        }
+        
+        @media (max-width: 768px) {
+            header {
+                flex-direction: column;
+                gap: 1rem;
+            }
+            
+            nav ul {
+                gap: 1.2rem;
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+            
+            .search-hero {
+                padding: 2rem 1.5rem;
+            }
+            
+            .search-hero h1 {
+                font-size: 2rem;
+            }
+            
+            .search-options {
+                flex-wrap: wrap;
+            }
+            
+            .waves {
+                display: none; /* Hide waves on mobile for better performance */
+            }
+        }
+        
+        @media (max-width: 480px) {
+            body {
+                padding: 1rem;
+            }
+            
+            .search-box {
+                flex-direction: column;
+                border-radius: 15px;
+            }
+            
+            .search-input {
+                border-radius: 0;
+            }
+            
+            .search-button {
+                padding: 1rem;
+                border-radius: 0;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Wave effects -->
+    <div class="waves">
+        <div class="wave"></div>
+        <div class="wave"></div>
+        <div class="wave"></div>
+    </div>
+    
+    <div class="container">
+        <header>
+            <div class="logo">
+                <i class="fas fa-search"></i>
+                <span>WaveSearch</span>
+            </div>
+            <nav>
+                <ul>
+                    <li><a href="#">Home</a></li>
+                    <li><a href="#">Features</a></li>
+                    <li><a href="#">Advanced</a></li>
+                    <li><a href="#">History</a></li>
+                    <li><a href="#">Settings</a></li>
+                </ul>
+            </nav>
+        </header>
+        
+        <section class="search-hero">
+            <h1>Fluid Search Experience</h1>
+            <p>Premium glass interface with elegant wave animations for a dynamic browsing experience</p>
+            
+            <div class="search-container">
+                <div class="search-box">
+                    <input type="text" class="search-input" placeholder="What would you like to discover today?">
+                    <button class="search-button">Search</button>
+                </div>
+                
+                <div class="search-options">
+                    <button class="search-option active" data-type="web">
+                        <i class="fas fa-globe"></i>
+                        Web
+                    </button>
+                    <button class="search-option" data-type="images">
+                        <i class="fas fa-image"></i>
+                        Images
+                    </button>
+                    <button class="search-option" data-type="news">
+                        <i class="fas fa-newspaper"></i>
+                        News
+                    </button>
+                    <button class="search-option" data-type="videos">
+                        <i class="fas fa-video"></i>
+                        Videos
+                    </button>
+                </div>
+            </div>
+        </section>
+        
+        <div class="loading" id="loading">
+            <i class="fas fa-spinner fa-spin"></i>
+            <p>Riding the waves of information...</p>
+        </div>
+        
+        <section class="results-section" id="results">
+            <h2><i class="fas fa-search"></i> Search Results</h2>
+            <div id="results-container">
+                <!-- Results will be inserted here by JavaScript -->
+            </div>
+        </section>
+        
+        <section class="features">
+            <div class="feature-card">
+                <div class="feature-icon">
+                    <i class="fas fa-bolt"></i>
+                </div>
+                <h3>Lightning Fast Results</h3>
+                <p>Get search results in milliseconds with our optimized search algorithm that indexes billions of web pages.</p>
+            </div>
+            
+            <div class="feature-card">
+                <div class="feature-icon">
+                    <i class="fas fa-filter"></i>
+                </div>
+                <h3>Smart Filtering</h3>
+                <p>Our AI-powered filters learn your preferences to deliver more relevant results over time.</p>
+            </div>
+            
+            <div class="feature-card">
+                <div class="feature-icon">
+                    <i class="fas fa-shield-alt"></i>
+                </div>
+                <h3>Privacy Focused</h3>
+                <p>We don't track your searches or sell your data. Your privacy is our priority.</p>
+            </div>
+        </section>
+        
+        <section class="recent-searches">
+            <h2><i class="fas fa-history"></i> Recent Searches</h2>
+            <div class="search-tags">
+                <div class="search-tag">Wave UI design patterns</div>
+                <div class="search-tag">Fluid animations</div>
+                <div class="search-tag">Modern web design</div>
+                <div class="search-tag">Interactive interfaces</div>
+                <div class="search-tag">Elegant interfaces</div>
+                <div class="search-tag">Advanced search tools</div>
+            </div>
+        </section>
+    </div>
+    
+    <footer>
+        <p>© 2023 <span class="accent">WaveSearch</span>. All rights reserved. Designed with <span class="accent">♥</span> for elegant searching.</p>
+    </footer>
+
+    <script>
+        // Backend simulation - This would be replaced with actual API calls
+        const backend = {
+            // Simulated search function
+            search: function(query, type) {
+                return new Promise((resolve) => {
+                    // Simulate network delay
+                    setTimeout(() => {
+                        // Generate realistic search results based on query
+                        const results = this.generateResults(query, type);
+                        resolve(results);
+                    }, 1500);
+                });
+            },
+            
+            // Generate realistic search results
+            generateResults: function(query, type) {
+                const results = [];
+                const resultCount = Math.floor(Math.random() * 5) + 4; // 4-8 results
+                
+                for (let i = 0; i < resultCount; i++) {
+                    results.push({
+                        title: `${this.capitalizeFirstLetter(query)} - ${this.getRandomTopic(i)}`,
+                        url: `https://www.example.com/${query.replace(/\s+/g, '-').toLowerCase()}-${i+1}`,
+                        description: this.getRandomDescription(query)
+                    });
+                }
+                
+                return results;
+            },
+            
+            capitalizeFirstLetter: function(string) {
+                return string.charAt(0).toUpperCase() + string.slice(1);
+            },
+            
+            getRandomTopic: function(index) {
+                const topics = [
+                    "Complete Guide and Tutorial",
+                    "Latest Trends and Developments",
+                    "Best Practices and Tips",
+                    "Comprehensive Overview",
+                    "Advanced Techniques",
+                    "Beginner-Friendly Introduction",
+                    "Industry Insights"
+                ];
+                return topics[index % topics.length];
+            },
+            
+            getRandomDescription: function(query) {
+                const descriptions = [
+                    `Learn everything you need to know about ${query} with our comprehensive guide. Discover best practices and avoid common mistakes.`,
+                    `The world of ${query} is constantly evolving. Stay up to date with the latest trends and developments in this rapidly changing field.`,
+                    `Whether you're a beginner or an expert, our resources on ${query} will help you enhance your skills and knowledge.`,
+                    `Discover how ${query} is transforming industries and creating new opportunities for professionals around the world.`,
+                    `Explore the fascinating world of ${query} through our curated collection of resources, tutorials, and expert insights.`
+                ];
+                return descriptions[Math.floor(Math.random() * descriptions.length)];
+            },
+            
+            // Save search to history
+            saveToHistory: function(query) {
+                let history = JSON.parse(localStorage.getItem('searchHistory') || '[]');
+                
+                // Add new query if not already in history
+                if (!history.includes(query)) {
+                    history.unshift(query);
+                    // Keep only the last 10 searches
+                    history = history.slice(0, 10);
+                    localStorage.setItem('searchHistory', JSON.stringify(history));
+                }
+                
+                return history;
+            },
+            
+            // Get search history
+            getHistory: function() {
+                return JSON.parse(localStorage.getItem('searchHistory') || '[]');
+            }
+        };
+
+        // DOM elements
+        const searchButton = document.querySelector('.search-button');
+        const searchInput = document.querySelector('.search-input');
+        const searchOptions = document.querySelectorAll('.search-option');
+        const loadingElement = document.getElementById('loading');
+        const resultsSection = document.getElementById('results');
+        const resultsContainer = document.getElementById('results-container');
+        const recentSearchesContainer = document.querySelector('.search-tags');
+        
+        // Current search type
+        let currentSearchType = 'web';
+        
+        // Initialize recent searches
+        function initRecentSearches() {
+            const history = backend.getHistory();
+            recentSearchesContainer.innerHTML = '';
+            
+            history.forEach(query => {
+                const tag = document.createElement('div');
+                tag.className = 'search-tag';
+                tag.textContent = query;
+                tag.addEventListener('click', () => {
+                    searchInput.value = query;
+                    performSearch();
+                });
+                recentSearchesContainer.appendChild(tag);
+            });
+            
+            if (history.length === 0) {
+                recentSearchesContainer.innerHTML = '<p>No recent searches</p>';
+            }
+        }
+        
+        // Perform search
+        async function performSearch() {
+            const query = searchInput.value.trim();
+            
+            if (!query) {
+                alert('Please enter a search query');
+                return;
+            }
+            
+            // Show loading state
+            loadingElement.style.display = 'block';
+            resultsSection.style.display = 'none';
+            
+            // Save to history
+            backend.saveToHistory(query);
+            initRecentSearches();
+            
+            try {
+                // Simulate API call to backend
+                const results = await backend.search(query, currentSearchType);
+                
+                // Display results
+                displayResults(results);
+                
+            } catch (error) {
+                console.error('Search error:', error);
+                resultsContainer.innerHTML = `<p>Error performing search: ${error.message}</p>`;
+            } finally {
+                // Hide loading state
+                loadingElement.style.display = 'none';
+                resultsSection.style.display = 'block';
+            }
+        }
+        
+        // Display results
+        function displayResults(results) {
+            resultsContainer.innerHTML = '';
+            
+            if (results.length === 0) {
+                resultsContainer.innerHTML = '<p>No results found. Try a different search query.</p>';
+                return;
+            }
+            
+            results.forEach(result => {
+                const resultElement = document.createElement('div');
+                resultElement.className = 'result-item';
+                
+                resultElement.innerHTML = `
+                    <a href="${result.url}" class="result-title">${result.title}</a>
+                    <span class="result-url">${result.url}</span>
+                    <p class="result-description">${result.description}</p>
+                `;
+                
+                resultsContainer.appendChild(resultElement);
+            });
+        }
+        
+        // Event listeners
+        searchButton.addEventListener('click', performSearch);
+        
+        searchInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') {
+                performSearch();
+            }
+        });
+        
+        searchOptions.forEach(option => {
+            option.addEventListener('click', function() {
+                searchOptions.forEach(btn => btn.classList.remove('active'));
+                this.classList.add('active');
+                currentSearchType = this.dataset.type;
+            });
+        });
+        
+        // Initialize recent searches on page load
+        document.addEventListener('DOMContentLoaded', initRecentSearches);
+        
+        // Add subtle parallax effect to background
+        document.addEventListener('mousemove', function(e) {
+            const moveX = (e.clientX - window.innerWidth / 2) / 25;
+            const moveY = (e.clientY - window.innerHeight / 2) / 25;
+            
+            document.body.style.backgroundPosition = `${50 + moveX / 20}% ${50 + moveY / 20}%`;
+        });
+    </script>
+</body>
+</html>
